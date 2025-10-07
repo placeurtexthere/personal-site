@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
+        <!-- Configure MathJax 3 to use $...$ for inline math -->
+        <script>
+            window.MathJax = {
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                    processEscapes: true,
+                    processEnvironments: true
+                },
+                options: {
+                    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+                    ignoreHtmlClass: 'tex2jax_ignore',
+                    processHtmlClass: 'tex2jax_process'
+                }
+            };
+        </script>
+        <!-- Load MathJax 3 (must be loaded after the config block) -->
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <!-- Load Marked.js for Markdown to HTML conversion -->
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    </head>
+    <body>
+        <div id="header"></div>
+        <div id="main-content" style="padding: 0 10px 0 10px;">
+
+            <h1>Test</h1>
+
+
+            <!-- Main Content Area: Now a single column for the output -->
+            <div class="p-6 lg:p-10">
+                <!-- Output Panel (Full Width) -->
+                <div class="flex flex-col">
+
+                    <!-- Metadata Display Area -->
+                    <div class="mb-6 pb-4 border-b border-indigo-200">
+                        <h2 id="document-title" class="text-3xl font-extrabold text-gray-900 mb-1">
+                            Document Title
+                        </h2>
+                        <p class="text-sm text-gray-600 mb-1">
+                            By <span id="author-display" class="font-semibold text-indigo-700">Author Name</span>
+                        </p>
+                        <p class="text-xs text-gray-500">
+                            Published: <span id="date-display">Date</span>
+                            (<span id="current-file">No file loaded</span>)
+                        </p>
+                    </div>
+
+                    <!-- Rendered Markdown Output -->
+                    <div
+                        id="rendered-output"
+                        class="flex-grow p-4 bg-gray-50 rounded-lg overflow-y-auto min-h-[500px]"
+                    >
+                        <p class="text-center text-gray-500 mt-10">Select a document to begin reading.</p>
+                    </div>
+                </div>
+            </div>
+
+            <aside id="sidebar">
+        <!-- Logo/Header -->
+        <div class="logo-header">
+            <h1 class="logo-text">
+                <span data-lucide="layout-grid" class="inline-block w-6 h-6 align-text-bottom mr-2"></span>
+                SYSTEM DASH
+            </h1>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav>
+            <!-- Added 'active' class for styling the selected link -->
+            <a href="#" class="active">
+                <span data-lucide="home" class="w-5 h-5 mr-3"></span>
+                [HOME] Console
+            </a>
+            <a href="#">
+                <span data-lucide="users" class="w-5 h-5 mr-3"></span>
+                [USER] Directory
+            </a>
+            <a href="#">
+                <span data-lucide="bar-chart-3" class="w-5 h-5 mr-3"></span>
+                [ANALYTICS] Data
+            </a>
+            <a href="#">
+                <span data-lucide="settings" class="w-5 h-5 mr-3"></span>
+                [SETTINGS] Config
+            </a>
+            <div class="logout-section">
+                <a href="#">
+                    <span data-lucide="log-out" class="w-5 h-5 mr-3"></span>
+                    LOGOUT
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+        </div>
+        <div id="footer"></div>
+    </body>
+</html>

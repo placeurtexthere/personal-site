@@ -1,0 +1,198 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+table, th, td {
+    border: 4px ridge black;
+    border-collapse: collapse;
+}
+
+th {
+    width: 50px;
+}
+
+.main-images {
+    width: 500px;
+    border: 6px ridge black;
+}
+
+body {
+    background-color: rgb(253, 203, 145);
+    padding: 60px 0 35px 0;
+}
+
+#header, #footer {
+    padding: 0 0 0 0;
+    position: fixed;
+    width: 100%;
+    background-color: rgb(203, 149, 88);
+}
+
+#header {
+    border-bottom: 6px ridge rgb(203, 149, 88);
+    top: 0;
+    height: 60px;
+}
+
+#navigation {
+    right: 12px;
+    top: 11px;
+    position: absolute;
+}
+
+#footer {
+    border-top: 6px ridge rgb(203, 149, 88);
+    bottom: 0;
+    height: 40px;
+    align-items:center;
+    justify-content: center;
+    display: flex;
+}
+
+.left-15 {
+    padding: 0 0 0 15px;
+}
+
+/* Navbar */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgb(177, 177, 177);
+    min-width: 50px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border: 6px ridge black;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: grey;
+    border: 6px ridge black;
+    border-collapse: collapse;
+    padding: 6px 10px;
+}
+
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-btn {background-color: grey;}
+
+button:hover {
+    background-color: grey;
+    cursor: pointer;
+}
+
+button {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    border: 6px ridge black;
+    font-size: large;
+}
+
+ @media (min-width: 768px) {
+            #sidebar {
+                width: 256px;
+                box-shadow: none;
+                position: static;
+                transform: translateX(0) !important; /* Always visible on desktop */
+                flex-shrink: 0;
+            }
+            #menu-toggle {
+                display: none;
+            }
+            main {
+                flex-grow: 1;
+                padding: 40px;
+                order: -1; /* Pushes main content to the left of the sidebar */
+            }
+        } @media (min-width: 768px) {
+            #sidebar {
+                width: 256px;
+                box-shadow: none;
+                position: static;
+                transform: translateX(0) !important; /* Always visible on desktop */
+                flex-shrink: 0;
+            }
+            #menu-toggle {
+                display: none;
+            }
+            main {
+                flex-grow: 1;
+                padding: 40px;
+                order: -1; /* Pushes main content to the left of the sidebar */
+            }
+        }
+
+/* 4. Common Styles for Sidebar Elements */
+        #sidebar {
+            background-color: #374151; /* Darker Slate background */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        #sidebar .logo-header {
+            padding: 24px;
+            border-bottom: 2px solid #6b7280; /* Hard border line */
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
+        #sidebar .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #10b981; /* Emerald Green Accent */
+            letter-spacing: 0.05em;
+        }
+        #sidebar nav {
+            flex-grow: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        #sidebar nav a {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            color: #e5e7eb;
+            border-radius: 2px; /* Subtle radius */
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+        #sidebar nav a:hover {
+            background-color: #4b5563; /* Darker hover background */
+            color: #10b981; /* Green text on hover */
+            border-left: 4px solid #10b981; /* Accent bar */
+            padding-left: 8px;
+        }
+        #sidebar nav a.active {
+            background-color: #10b981;
+            color: #1f2937; /* Dark text on green background */
+            font-weight: 700;
+            border: 2px solid #064e3b;
+        }
+        #sidebar .logout-section {
+            padding-top: 16px;
+            border-top: 2px solid #6b7280;
+            margin-top: 16px;
+        }

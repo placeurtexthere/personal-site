@@ -1,0 +1,36 @@
+    <div id="navigation">
+        <button>Home</button>
+        <div class="dropdown">
+            <button>Stuff</button>
+            <div class="dropdown-content">
+
+            </div>
+        </div>
+        <h1 class="text-3xl font-extrabold text-white mb-3 sm:mb-0">
+                Document Reader
+            </h1>
+
+            <!-- Custom Dropdown Button and Menu -->
+            <div class="relative">
+                <button
+                    id="dropdown-button"
+                    class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-150 ease-in-out"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                >
+                    Load Document
+                </button>
+
+                <!-- Dropdown Menu Container (Initially hidden) -->
+                <div
+                    id="dropdown-menu"
+                    class="absolute right-0 mt-2 w-64 rounded-xl shadow-2xl bg-white ring-1 ring-black ring-opacity-5 z-10 hidden origin-top-right transform scale-95 transition ease-out duration-100"
+                >
+                    <div id="dropdown-links-container" class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-button">
+                        <!-- Links will be dynamically inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
