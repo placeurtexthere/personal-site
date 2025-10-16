@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collapsible Sidebar Overlay - Retro Theme</title>
+    <!-- Load Lucide Icons for the toggle icon -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Birthstone&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+
+
+    <style>
+        /* 1. Global & Theme Styles */
+        :root {
+            --primary-color: rgb(203, 149, 88); /* Brown/Handle color */
+            --secondary-color: #48E09E; /* Peach/Accent background */
+            --sidebar-width: 18rem; /* 288px */
+            --handle-width: 2.25rem; /* 36px */
+            --handle-height: 5rem;  /* 80px */
+            --transition-speed: 0.3s;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            color: #48E09E; /* rgb(226, 101, 149) */
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1B365C; /* rgb(226, 187, 101) */
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* 3. Main Content Area Styling (Always full screen) */
+        .main-content-area {
+            width: 100vw;
+            height: 100vh;
+            padding: 2rem;
+            overflow-y: auto;
+            transition: padding var(--transition-speed) ease-in-out;
+            background-color: #1B365C;
+            border: 4px ridge black;
+            min-width: 0;
+            min-height: 0;
+        }
+
+        /* Content placeholder inside main area */
+        .main-content-placeholder {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .main-content-placeholder h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 0.5rem;
+        }
+
+        .main-content-placeholder p {
+            color: #333;
+        }
+
+        /* 4. Sidebar Styling (ALWAYS Fixed, Default Closed) */
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            /* Start closed: Position so only the 2.25rem handle width is visible and flush right. */
+            right: calc(-1 * (var(--sidebar-width) + var(--handle-width)));
+            width: var(--sidebar-width);
+            height: 100vh;
+
+            /* The sidebar itself is the white box now, eliminating the "brown strip" issue */
+            background-color: #1B365C;
+            border-left: 4px ridge black;
+
+            z-index: 40;
+            transition: right var(--transition-speed) ease-in-out;
+        }
+
+        /* Inner background div removed, content padding applied here */
+        .sidebar-content {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 41;
+            transform: none;
+            transition: none;
+        }
+
+        /* Open State: Sidebar slides fully into view, flush right */
+        body.sidebar-open .sidebar-menu {
+            right: 0;
+        }
+
+        .sidebar-content .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        /* Navigation Links */
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 16px;
+            border-radius: 0;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+            border: 4px ridge black;
+            background-color: rgb(177, 177, 177);
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        .sidebar-nav a:hover {
+            background-color: grey;
+            color: black;
+        }
+
+        .sidebar-nav a.active {
+            background-color: grey;
+            color: black;
+            font-weight: bold;
+        }
+
+        /* 5. Toggle Handle/Button Styling (Uses SVG for shape) */
+        .toggle-handle {
+            position: absolute;
+            top: 5%;
+            transform: translateY(-50%);
+
+            /* Positioned to the LEFT of the white sidebar container */
+            left: calc(-1 * var(--handle-width));
+            right: auto;
+
+            width: var(--handle-width);
+            height: var(--handle-height);
+
+            z-index: 50; /* Ensure it's above everything */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+        }
+
+        /* The SVG Shape itself (defines the blended appearance) */
+        .handle-shape {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            filter: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .handle-shape path {
+            fill: var(--primary-color);
+            stroke: black;
+            stroke-width: 4;
+            /* Path: Flush on the right (to blend into the sidebar), rounded on the left (the pull tab) */
+            d: path("M 30 0 H 10 A 10 10 0 0 0 0 10 V 70 A 10 10 0 0 0 10 80 H 30 V 0 Z");
+        }
+
+        /* The Lucide Icon (positioned over the SVG shape) */
+        .toggle-icon {
+            z-index: 51;
+            width: 1.5rem;
+            height: 1.5rem;
+            color: black;
+            transition: transform var(--transition-speed) ease-in-out;
+        }
+
+        /* Icon Rotation: Points left (0deg) when closed (to suggest opening) */
+        .sidebar-menu .toggle-icon {
+            transform: rotate(0deg);
+        }
+
+        /* Open: Icon points right (180deg) to suggest pushing it closed */
+        body.sidebar-open .sidebar-menu .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 7. Responsive Styles (Large Screen - 1024px and up) */
+        @media (min-width: 1024px) {
+            .sidebar-menu {
+                right: calc(-1 * var(--sidebar-width));
+            }
+
+            body.sidebar-open .sidebar-menu {
+                right: 0;
+            }
+        }
+
+        /* 8. Responsive Padding Adjustment (Medium Screen - 768px and up) */
+        @media (min-width: 768px) {
+            .main-content-area {
+                padding: 2rem;
+            }
+        }
+
+        .birthstone-regular {
+            font-family: "Birthstone", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* <weight>: Use a value from 400 to 700 */
+        /* <uniquifier>: Use a unique and descriptive class name */
+
+        .dancing-script-medium {
+            font-family: "Dancing Script", cursive;
+            font-optical-sizing: auto;
+            font-weight: medium; /* 500 */
+            font-style: normal;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- MAIN CONTENT AREA (Now full screen in the background) -->
+    <main id="main-content" class="main-content-area">
+        <div class="main-content-placeholder">
+            <h1>Full Screen Overlay Layout</h1>
+            <p>The main content now fills the entire viewport ($100vw, $100vh$).</p>
+            <p style="margin-top: 2rem; padding: 1rem; border: 4px ridge black; background-color: var(--secondary-color);">
+                The sidebar is fixed and hovers over this content when opened, never causing the main content to resize.
+            </p>
+            <p>Current screen width: <span id="width-display"></span>px</p>
+        </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR MENU (Always Fixed/Hovering) -->
+    <aside id="sidebar" class="sidebar-menu">
+
+        <!-- COLLAPSE TOGGLE HANDLE (Uses SVG for shape, DIV for click/structure) -->
+        <div id="sidebar-toggle"
+                class="toggle-handle"
+                role="button"
+                tabindex="0"
+                aria-expanded="false"
+                aria-controls="sidebar">
+
+            <!-- SVG Shape (ViewBox is 30 units wide and 80 units high) -->
+            <svg viewBox="0 0 30 80" class="handle-shape">
+                <!-- Path: Creates a shape that is rounded on the left side (hanging off) and flush on the right (blended into the sidebar). -->
+                <path d="M 30 0 H 10 A 10 10 0 0 0 0 10 V 70 A 10 10 0 0 0 10 80 H 30 V 0 Z" />
+            </svg>
+
+            <!-- Lucide Icon: Permanently set to chevron-left, relying on CSS rotation -->
+            <i data-lucide="chevron-left" id="toggle-icon" class="toggle-icon"></i>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="title dancing-script-medium" style="font-size: 60px; color: #48E09E;">
+                illyes.tech
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#">
+                    <i data-lucide="layout-dashboard" class="toggle-icon"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#">
+                    <i data-lucide="line-chart" class="toggle-icon"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="active">
+                    <i data-lucide="users" class="toggle-icon"></i>
+                    <span>Team (Active)</span>
+                </a>
+                <a href="#">
+                    <i data-lucide="file-text" class="toggle-icon"></i>
+                    <span>Documents</span>
+                </a>
+                <a href="#">
+                    <i data-lucide="settings" class="toggle-icon"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </div>
+
+    </aside>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Get elements
+        const body = document.body;
+        const toggleHandle = document.getElementById('sidebar-toggle');
+        const widthDisplay = document.getElementById('width-display');
+
+        // Function to update width display
+        function updateWidthDisplay() {
+            widthDisplay.textContent = window.innerWidth;
+        }
+
+        // Check for large screen size (match CSS media query: 1024px)
+        const isDesktop = () => window.innerWidth >= 1024;
+
+        let isSidebarOpen = false; // Initialize to false. Initial state will be set in window.load
+
+        // Function to toggle the sidebar state
+        function toggleSidebar() {
+            isSidebarOpen = !isSidebarOpen;
+
+            // Apply state directly to the body for all screen sizes
+            body.classList.toggle('sidebar-open', isSidebarOpen);
+
+            // Update accessibility attributes based on new state
+            toggleHandle.setAttribute('aria-expanded', isSidebarOpen ? 'true' : 'false');
+        }
+
+        // --- Initial Load Setup and Event Listeners ---
+
+        window.addEventListener('load', () => {
+            updateWidthDisplay();
+            // Default desktop state is open, mobile is closed.
+            isSidebarOpen = isDesktop();
+
+            // Apply initial state
+            body.classList.toggle('sidebar-open', isSidebarOpen);
+            toggleHandle.setAttribute('aria-expanded', isSidebarOpen ? 'true' : 'false');
+        });
+
+        // 2. Handle screen resize
+        window.addEventListener('resize', () => {
+            updateWidthDisplay();
+            // We only need to ensure the body class is set correctly based on the current toggle state.
+            body.classList.toggle('sidebar-open', isSidebarOpen);
+        });
+
+
+        // 3. Event listener for the toggle handle
+        toggleHandle.addEventListener('click', toggleSidebar);
+
+    </script>
+</body>
+</html>
